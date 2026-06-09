@@ -76,8 +76,29 @@
   .noteinput{width:100%;margin-top:9px;background:var(--bg2);border:1px solid var(--line);border-radius:9px;
     color:var(--ink);font-family:var(--body);font-size:14px;padding:9px 10px;resize:vertical;min-height:40px}
   .savednote{margin-top:8px;color:var(--orange);font-size:12.5px;font-style:italic}
-  .skiprow{margin-top:10px;display:flex;align-items:center;gap:7px;color:var(--mut);font-size:12.5px}
-  .skiprow input{width:17px;height:17px;accent-color:var(--accent)}
+  .infobtn{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--accent-d);
+    background:transparent;color:var(--accent);font-size:14px;font-weight:700;line-height:1;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center}
+  .namewrap{display:flex;align-items:center;gap:8px}
+  .notebtn.note-on{background:var(--accent);color:#06231f;border-color:var(--accent)}
+  .notepill{display:inline-flex;align-items:center;gap:5px;border:1.5px solid #8a6a3a;
+    background:rgba(224,138,43,.10);color:var(--orange);font-family:var(--disp);font-weight:700;
+    font-size:12px;text-transform:uppercase;letter-spacing:.6px;padding:7px 12px;border-radius:8px;
+    cursor:pointer;white-space:nowrap;margin-left:4px}
+  .notepill.note-on{background:var(--orange);color:#1a1208;border-color:var(--orange)}
+  .acts{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px}
+  .acts button{border:1.5px solid var(--line);background:var(--bg2);color:var(--mut);
+    font-family:var(--disp);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;
+    padding:11px 20px;border-radius:10px;cursor:pointer}
+  .btn-skip{color:var(--mut)}
+  .btn-skip.skip-on{background:#3a2a2a;border-color:#7a4a4a;color:#f0c9c9}
+  .btn-done{color:#4fd084;border-color:#2a6b43}
+  .btn-done.done-on{background:#2a9c54;border-color:#37b566;color:#06231f}
+  .card.done::before{background:#2a9c54;opacity:1}
+  .card.done{border-color:#2a6b43}
+  .donecheck{position:absolute;top:11px;right:12px;color:#3fd07a;font-size:20px;font-weight:700;display:none}
+  .card.done .donecheck{display:block}
+  .card.done .swap{display:none}
   /* buttons */
   .btn{display:block;width:100%;border:0;border-radius:12px;font-family:var(--disp);font-weight:700;
     font-size:16px;letter-spacing:.5px;text-transform:uppercase;padding:14px;margin-top:10px;cursor:pointer}
@@ -146,8 +167,7 @@
 
 <nav class="wrap" style="max-width:560px">
   <button data-view="A" class="on"><span class="ic">▣</span>Workout</button>
-  <button data-view="aerobic"><span class="ic">∿</span>Easy</button>
-  <button data-view="other"><span class="ic">✎</span>Other</button>
+  <button data-view="extra"><span class="ic">+</span>Extra</button>
   <button data-view="history"><span class="ic">≣</span>History</button>
 </nav>
 
@@ -169,14 +189,14 @@ var DATA=load();
 /* ---------------- templates ---------------- */
 var TPL={
  A:{name:"Template A",sub:"Lower-strength lead",ex:[
-  {key:"wu",name:"Warm-up",target:"Prime & mobilise",cue:["Light backward sled drag 2–3 lengths","Tib raises · ankle + hip mobility","A few easy bodyweight split squats"],fields:[]},
+  {key:"wu",name:"Warm-up",target:"Free-text — log what you did",freetext:true,cue:["Light backward sled drag 2–3 lengths","Tib raises · ankle + hip mobility","A few easy bodyweight split squats"],fields:[]},
   {key:"tbdl",name:"Trap-bar deadlift",target:"Target  4 × 5 @ 85 kg",rir:true,
    cue:["Neutral spine, brace, full lockout","Controlled lowering — no drop/bounce","Add 2.5–5 kg when all sets feel crisp"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"reps",l:"reps",ph:"5"},{k:"kg",l:"kg",ph:"85"}],
    swaps:["Conventional deadlift","DB Romanian deadlift","Hip thrust"]},
-  {key:"ssq",name:"Split squat — FFE",target:"Target  3 × 8–10 / leg",
-   cue:["Front foot elevated 2–4 in","Front heel planted, knee over toes","Prioritise the RIGHT ankle — depth + balance"],
-   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps/leg",ph:"9"},{k:"kg",l:"load",ph:"BW"}],
+  {key:"ssq",name:"Split squat — FFE (weighted)",target:"Target  3 × 8–10 / leg · added load",
+   cue:["Front foot elevated 2–4 in","Front heel planted, knee over toes","Prioritise the RIGHT ankle — depth + balance","Load you can control for clean reps (goblet → DBs)"],
+   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps/leg",ph:"9"},{k:"kg",l:"load kg",ph:"goblet"}],
    swaps:["Reverse lunge","Step-up","Walking lunge"]},
   {key:"pull",name:"Pull-up block",target:"Negatives 4–5×1 (5–8s) · blue band 3×5–6",
    cue:["Negatives: 5–8 s lower, full rest","Reduce band tension as you strengthen","Re-test strict singles every 2 weeks"],
@@ -195,7 +215,7 @@ var TPL={
    fields:[{k:"plank",l:"plank s",ph:"50"},{k:"pallof",l:"pallof/side",ph:"10"}],swaps:[]}
  ]},
  B:{name:"Template B",sub:"Upper + carry lead",ex:[
-  {key:"wu",name:"Warm-up",target:"Prime & mobilise",cue:["Light backward sled drag","Band pull-aparts · push-up ramp","Scapular pull-ups 2 × 5"],fields:[]},
+  {key:"wu",name:"Warm-up",target:"Free-text — log what you did",freetext:true,cue:["Light backward sled drag","Band pull-aparts · push-up ramp","Scapular pull-ups 2 × 5"],fields:[]},
   {key:"bench",name:"DB bench press",target:"Target  4 × 6–8 @ 16 kg",rir:true,
    cue:["Flat bench, handles parallel, no twist","Full stretch at the bottom, full lockout","LEFT arm sets the number — match both to it"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"reps",l:"reps",ph:"7"},{k:"kg",l:"kg/hand",ph:"16"}],
@@ -253,7 +273,7 @@ function newDraft(type){
    items:t.ex.map(function(ex){
      var li=lastItem(ex.name),vals={};
      ex.fields.forEach(function(f){vals[f.k]= li&&li.values&&li.values[f.k]!=null? li.values[f.k] : "";});
-     return {key:ex.key,name:ex.name,base:ex.name,swapped:false,skipped:false,values:vals,
+     return {key:ex.key,name:ex.name,base:ex.name,swapped:false,skipped:false,done:false,values:vals,
        rir: ex.rir? (li&&li.rir!=null?li.rir:"") : null, note:""};
    })};
 }
@@ -269,8 +289,7 @@ function setAccent(type){
 function render(){
   var m=$("main");
   if(view==="A"||view==="B"){setAccent(draft.type);m.innerHTML=workoutHTML();bindWorkout();}
-  else if(view==="aerobic"){setAccent("A");m.innerHTML=aerobicHTML();bindAerobic();}
-  else if(view==="other"){setAccent("A");m.innerHTML=otherHTML();bindOther();}
+  else if(view==="extra"){setAccent("A");m.innerHTML=extraHTML();bindExtra();}
   else {setAccent("A");m.innerHTML=historyHTML();bindHistory();}
 }
 
@@ -282,14 +301,24 @@ function workoutHTML(){
   var t=TPL[draft.type];
   t.ex.forEach(function(ex,i){
     var it=draft.items[i], li=lastItem(it.name);
-    h+='<div class="card '+(it.skipped?"skip":"")+'" data-i="'+i+'">';
-    h+='<div class="cardtop"><div><div class="exname">'+esc(it.name)+'</div>';
+    h+='<div class="card '+(it.skipped?"skip":"")+(it.done?" done":"")+'" data-i="'+i+'">';
+    h+='<div class="donecheck">✓</div>';
+    h+='<div class="cardtop"><div style="flex:1"><div class="namewrap"><span class="exname">'+esc(it.name)+'</span>';
+    h+='<button class="infobtn" data-act="cue" data-i="'+i+'" aria-label="cues">ⓘ</button>';
+    if(!ex.freetext)h+='<button class="notepill '+(it.note?"note-on":"")+'" data-act="note" data-i="'+i+'">✎ note</button>';
+    h+='</div>';
     if(it.swapped)h+='<div class="target" style="color:var(--orange)">↳ swapped from '+esc(it.base)+'</div>';
     else h+='<div class="target">'+esc(ex.target)+'</div>';
-    h+='<div class="last">'+esc(lastStr(li))+'</div></div>';
+    if(!ex.freetext)h+='<div class="last">'+esc(lastStr(li))+'</div>';
+    h+='</div>';
     if((ex.swaps&&ex.swaps.length)||it.swapped)h+='<button class="swap" data-act="swap" data-i="'+i+'">⇄ swap</button>';
     h+='</div>';
-    if(ex.fields.length){
+    h+='<div class="reveal" id="cue'+i+'" style="display:none"><ul>'+ex.cue.map(function(c){return "<li>"+esc(c)+"</li>";}).join("")+'</ul></div>';
+    h+='<div id="notew'+i+'" style="display:'+(it.note?"block":"none")+'">'
+      +'<textarea class="noteinput" data-act="noteinput" data-i="'+i+'" placeholder="e.g. left arm capped at 6 · right ankle tight">'+esc(it.note)+'</textarea></div>';
+    if(ex.freetext){
+      h+='<textarea class="noteinput" data-act="ft" data-i="'+i+'" style="min-height:64px" placeholder="what you did — sled, mobility, ramp-up sets…">'+esc(it.values.text||"")+'</textarea>';
+    } else if(ex.fields.length){
       h+='<div class="fields">';
       ex.fields.forEach(function(f){
         h+='<div class="field"><input inputmode="text" data-i="'+i+'" data-k="'+f.k+'" value="'+esc(it.values[f.k])+'" placeholder="'+esc(f.ph)+'"><label>'+esc(f.l)+'</label></div>';
@@ -301,14 +330,10 @@ function workoutHTML(){
       ["0","1","2","3","4+"].forEach(function(v){h+='<button data-act="rir" data-i="'+i+'" data-v="'+v+'" class="'+(it.rir===v?"on":"")+'">'+v+'</button>';});
       h+='</div>';
     }
-    h+='<div class="row2">';
-    h+='<button class="link" data-act="cue" data-i="'+i+'">ⓘ cues</button>';
-    h+='<button class="link" data-act="note" data-i="'+i+'">✎ '+(it.note?"edit note":"add note")+'</button>';
+    h+='<div class="acts">';
+    h+='<button class="btn-skip '+(it.skipped?"skip-on":"")+'" data-act="skip" data-i="'+i+'">'+(it.skipped?"skipped":"skip")+'</button>';
+    h+='<button class="btn-done '+(it.done?"done-on":"")+'" data-act="done" data-i="'+i+'">'+(it.done?"✓ done":"mark done")+'</button>';
     h+='</div>';
-    h+='<div class="reveal" id="cue'+i+'" style="display:none"><ul>'+ex.cue.map(function(c){return "<li>"+esc(c)+"</li>";}).join("")+'</ul></div>';
-    h+='<div id="notew'+i+'" style="display:'+(it.note?"block":"none")+'">'
-      +'<textarea class="noteinput" data-act="noteinput" data-i="'+i+'" placeholder="e.g. left arm capped at 6 · right ankle tight">'+esc(it.note)+'</textarea></div>';
-    h+='<label class="skiprow"><input type="checkbox" data-act="skip" data-i="'+i+'" '+(it.skipped?"checked":"")+'> skipped / didn\'t get to this</label>';
     h+='</div>';
   });
   h+='<button class="btn primary" data-act="save">Save session</button>';
@@ -319,7 +344,7 @@ function bindWorkout(){
   var m=$("main");
   m.querySelectorAll(".seg button").forEach(function(b){b.onclick=function(){
     var t=b.getAttribute("data-t"); if(t===draft.type)return;
-    var dirty=draft.items.some(function(it){return hasVals(it)||it.note||it.skipped||(it.rir!=null&&it.rir!=="");});
+    var dirty=draft.items.some(function(it){return hasVals(it)||it.note||it.skipped||it.done||(it.rir!=null&&it.rir!=="");});
     if(dirty&&!confirm("Start "+t+"? Unsaved entries in the current session will be cleared."))return;
     draft=newDraft(t);saveDraft();render();
   };});
@@ -332,7 +357,9 @@ function bindWorkout(){
     if(act==="cue")el.onclick=function(){var c=$("cue"+i);c.style.display=c.style.display==="none"?"block":"none";};
     if(act==="note")el.onclick=function(){var w=$("notew"+i);w.style.display=w.style.display==="none"?"block":"none";if(w.style.display==="block")w.querySelector("textarea").focus();};
     if(act==="noteinput")el.oninput=function(){draft.items[i].note=el.value;saveDraft();};
-    if(act==="skip")el.onchange=function(){draft.items[i].skipped=el.checked;saveDraft();render();};
+    if(act==="ft")el.oninput=function(){draft.items[i].values.text=el.value;saveDraft();};
+    if(act==="done")el.onclick=function(){var it=draft.items[i];it.done=!it.done;if(it.done)it.skipped=false;saveDraft();render();};
+    if(act==="skip")el.onclick=function(){var it=draft.items[i];it.skipped=!it.skipped;if(it.skipped)it.done=false;saveDraft();render();};
     if(act==="swap")el.onclick=function(){openSwap(i);};
     if(act==="save")el.onclick=saveSession;
     if(act==="resetday")el.onclick=function(){if(confirm("Clear this session's entries?")){draft=newDraft(draft.type);saveDraft();render();}};
@@ -377,51 +404,40 @@ function applySwap(i,name,swapped){
   saveDraft(); render();
 }
 
-/* aerobic */
-function aerobicHTML(){
-  return '<h2 style="margin:14px 0 2px;text-transform:uppercase;letter-spacing:.5px">Easy / aerobic session</h2>'
-   +'<div class="hint" style="margin-bottom:6px">The deep-endurance engine — keep it truly easy (could hold 60+ min).</div>'
-   +'<div class="formlbl">Type</div><div class="chips" id="aeType">'
-   +['Walk','Ruck','Bike','Stair','Swim','Other'].map(function(x){return '<button data-v="'+x+'">'+x+'</button>';}).join("")+'</div>'
-   +'<div class="formlbl">Duration (min)</div><input class="txt" id="aeDur" inputmode="numeric" placeholder="40">'
-   +'<div class="formlbl">How it felt</div><div class="chips" id="aeFeel">'
-   +['Easy','Moderate','Hard'].map(function(x){return '<button data-v="'+x+'">'+x+'</button>';}).join("")+'</div>'
-   +'<div class="formlbl">Notes (optional)</div><textarea class="area" id="aeNote" placeholder="pace · HR if known · terrain"></textarea>'
-   +'<button class="btn primary" id="aeSave">Save easy session</button>';
-}
-function bindAerobic(){
-  var ty="",fe="";
-  $("aeType").querySelectorAll("button").forEach(function(b){b.onclick=function(){ty=b.getAttribute("data-v");$("aeType").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");};});
-  $("aeFeel").querySelectorAll("button").forEach(function(b){b.onclick=function(){fe=b.getAttribute("data-v");$("aeFeel").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");};});
-  $("aeSave").onclick=function(){
-    if(!ty&&!$("aeDur").value){toast("Pick a type or add a duration");return;}
-    DATA.sessions.push({id:Date.now(),type:"aerobic",date:$("sessDate").value||todayISO(),
-      modality:ty||"Other",duration:$("aeDur").value,feel:fe,note:$("aeNote").value});
-    persist();toast("Easy session saved ✓");view="history";syncNav();render();
-  };
-}
-
-/* other */
-var OTHER_PH={Ruck:"duration · load · terrain · how it felt",
-  Conditioning:"e.g. 20 min KB EMOM — swings + goblet squats — felt strong",
-  "Improvised lift":"movements · sets × reps × load (e.g. 3×10 DB press @20, 3×12 lunge)",
+/* extra (merged easy + other) */
+var CAT_PH={
+  Walk:"duration · pace · terrain · how it felt",
+  Ruck:"duration · load · terrain · how it felt",
+  Bike:"duration · pace/HR · how it felt",
+  Stair:"duration · level · how it felt",
+  Swim:"duration · distance · how it felt",
+  Kettlebells:"e.g. 5 rounds: 10 swings @24 · 8 goblet squats @24 — felt strong",
+  Conditioning:"format/rounds · movements · how it felt",
+  "Improvised lift":"movements · sets × reps × load (e.g. 3×10 DB press @20)",
   Other:"what you did — include numbers/durations where you can"};
-function otherHTML(){
-  return '<h2 style="margin:14px 0 2px;text-transform:uppercase;letter-spacing:.5px">Other session</h2>'
-   +'<div class="hint" style="margin-bottom:6px">Rucks, hotel gyms, one-off workouts — free text. The more numbers you include, the more I can pull from it.</div>'
-   +'<div class="formlbl">Tag</div><div class="chips" id="otTag">'
-   +Object.keys(OTHER_PH).map(function(x){return '<button data-v="'+x+'">'+x+'</button>';}).join("")+'</div>'
-   +'<div class="formlbl">What you did</div><textarea class="area" id="otText" placeholder="'+esc(OTHER_PH.Other)+'"></textarea>'
-   +'<button class="btn primary" id="otSave">Save other session</button>';
+var CATS=Object.keys(CAT_PH);
+function extraHTML(){
+  return '<h2 style="margin:14px 0 2px;text-transform:uppercase;letter-spacing:.5px">Extra session</h2>'
+   +'<div class="hint" style="margin-bottom:6px">Everything outside A/B — easy aerobic, rucks, kettlebells, hotel gyms, one-offs. Easy aerobic is your deep-endurance engine; keep it truly easy (could hold 60+ min). The more numbers you include, the more I can pull from it.</div>'
+   +'<div class="formlbl">Category</div><div class="chips" id="exCat">'
+   +CATS.map(function(x){return '<button data-v="'+esc(x)+'">'+esc(x)+'</button>';}).join("")+'</div>'
+   +'<div class="formlbl">Duration (min) — optional</div><input class="txt" id="exDur" inputmode="numeric" placeholder="40">'
+   +'<div class="formlbl">How it felt — optional</div><div class="chips" id="exFeel">'
+   +['Easy','Moderate','Hard'].map(function(x){return '<button data-v="'+x+'">'+x+'</button>';}).join("")+'</div>'
+   +'<div class="formlbl">Details</div><textarea class="area" id="exText" placeholder="'+esc(CAT_PH.Other)+'"></textarea>'
+   +'<button class="btn primary" id="exSave">Save extra session</button>';
 }
-function bindOther(){
-  var tag="Other";
-  $("otTag").querySelectorAll("button").forEach(function(b){b.onclick=function(){
-    tag=b.getAttribute("data-v");$("otTag").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");
-    $("otText").placeholder=OTHER_PH[tag]||OTHER_PH.Other;};});
-  $("otSave").onclick=function(){
-    if(!$("otText").value.trim()){toast("Add a few words first");return;}
-    DATA.sessions.push({id:Date.now(),type:"other",date:$("sessDate").value||todayISO(),tag:tag,text:$("otText").value.trim()});
+function bindExtra(){
+  var cat="",fe="";
+  $("exCat").querySelectorAll("button").forEach(function(b){b.onclick=function(){
+    cat=b.getAttribute("data-v");$("exCat").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");
+    $("exText").placeholder=CAT_PH[cat]||CAT_PH.Other;};});
+  $("exFeel").querySelectorAll("button").forEach(function(b){b.onclick=function(){
+    fe=b.getAttribute("data-v");$("exFeel").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");};});
+  $("exSave").onclick=function(){
+    if(!cat&&!$("exDur").value&&!$("exText").value.trim()){toast("Pick a category or add some detail");return;}
+    DATA.sessions.push({id:Date.now(),type:"extra",date:$("sessDate").value||todayISO(),
+      category:cat||"Other",duration:$("exDur").value,feel:fe,text:$("exText").value.trim()});
     persist();toast("Saved ✓");view="history";syncNav();render();
   };
 }
@@ -441,7 +457,7 @@ function historyHTML(){
   if(!DATA.sessions.length)h+='<div class="empty">No sessions yet. Log your first one from the Workout tab.</div>';
   else{
     DATA.sessions.slice().reverse().forEach(function(s){
-      var title = s.type==="A"?"Template A":s.type==="B"?"Template B":s.type==="aerobic"?(esc(s.modality)+" "+(s.duration?esc(s.duration)+" min":"")):("Other · "+esc(s.tag));
+      var title = s.type==="A"?"Template A":s.type==="B"?"Template B":s.type==="extra"?(esc(s.category)+(s.duration?" · "+esc(s.duration)+" min":"")):s.type==="aerobic"?(esc(s.modality)+" "+(s.duration?esc(s.duration)+" min":"")):("Other · "+esc(s.tag));
       h+='<div class="hsess" data-id="'+s.id+'"><h3>'+title+'<span class="htag">'+esc(fmtDate(s.date))+'</span></h3>';
       h+='<div class="det">'+sessionDetail(s)+'</div></div>';
     });
@@ -451,7 +467,7 @@ function historyHTML(){
 function sessionDetail(s){
   if(s.type==="A"||s.type==="B"){
     return s.items.map(function(it){
-      if(it.key==="wu"&&!it.note&&!it.skipped)return "";
+      if(it.key==="wu"&&!it.values.text&&!it.note&&!it.skipped)return "";
       if(it.skipped)return '<div>'+esc(it.name)+' — <i>skipped</i></div>';
       var parts=[];for(var k in it.values){if(it.values[k]!=="")parts.push(it.values[k]);}
       var line=esc(it.name)+(it.swapped?' (←'+esc(it.base)+')':'')+': '+(parts.join(" · ")||"—");
@@ -460,8 +476,9 @@ function sessionDetail(s){
       return '<div>'+line+'</div>';
     }).join("");
   }
+  if(s.type==="extra"){var parts=[esc(s.category)];if(s.duration)parts.push(esc(s.duration)+" min");if(s.feel)parts.push(esc(s.feel));return '<div>'+parts.join(" · ")+(s.text?' — '+esc(s.text):'')+'</div>';}
   if(s.type==="aerobic")return '<div>'+esc(s.modality)+' · '+esc(s.duration||"?")+' min'+(s.feel?' · '+esc(s.feel):'')+(s.note?' — '+esc(s.note):'')+'</div>';
-  return '<div>'+esc(s.text)+'</div>';
+  return '<div>'+esc(s.text||"")+'</div>';
 }
 function bindHistory(){
   $("bw").oninput=function(){DATA.bodyweight=$("bw").value;persist();};
@@ -489,15 +506,17 @@ function buildText(list){
     if(s.type==="A"||s.type==="B"){
       L.push("["+s.date+"] Template "+s.type);
       s.items.forEach(function(it){
-        if(it.key==="wu"&&!it.note&&!it.skipped)return;
+        if(it.key==="wu"&&!it.values.text&&!it.note&&!it.skipped)return;
         if(it.skipped){L.push("  - "+it.name+": SKIPPED"+(it.note?" ("+it.note+")":""));return;}
         var parts=[];for(var k in it.values){if(it.values[k]!=="")parts.push(it.values[k]);}
-        if(!parts.length&&!it.note&&it.rir==="")return;
+        if(!parts.length&&!it.note&&!(it.rir!=null&&it.rir!==""))return;
         var line="  - "+it.name+(it.swapped?" [swapped from "+it.base+"]":"")+": "+(parts.join(" / ")||"—");
         if(it.rir!=null&&it.rir!=="")line+=" (RIR "+it.rir+")";
         if(it.note)line+=" — note: "+it.note;
         L.push(line);
       });
+    } else if(s.type==="extra"){
+      var x="["+s.date+"] "+s.category; if(s.duration)x+=" "+s.duration+" min"; if(s.feel)x+=" — "+s.feel; if(s.text)x+=" — "+s.text; L.push(x);
     } else if(s.type==="aerobic"){
       L.push("["+s.date+"] Easy: "+s.modality+" "+(s.duration||"?")+" min"+(s.feel?" — "+s.feel:"")+(s.note?" — "+s.note:""));
     } else {
