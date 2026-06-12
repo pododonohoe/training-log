@@ -176,6 +176,7 @@
 
 <script>
 "use strict";
+var PROGRAM_VERSION="foundation-2day-v2.0 (2026-06-12)";
 /* ---------------- storage ---------------- */
 var LS="tl_data_v1", DK="tl_draft_v1";
 function fresh(){return{version:1,bodyweight:"",sessions:[],exportedUpto:null};}
@@ -188,58 +189,59 @@ var DATA=load();
 
 /* ---------------- templates ---------------- */
 var TPL={
- A:{name:"Template A",sub:"Lower-strength lead",ex:[
-  {key:"wu",name:"Warm-up",target:"Free-text — log what you did",freetext:true,cue:["Light backward sled drag 2–3 lengths","Tib raises · ankle + hip mobility","A few easy bodyweight split squats"],fields:[]},
-  {key:"tbdl",name:"Trap-bar deadlift",target:"Target  4 × 5 @ 85 kg",rir:true,
-   cue:["Neutral spine, brace, full lockout","Controlled lowering — no drop/bounce","Add 2.5–5 kg when all sets feel crisp"],
+ A:{name:"Day A",sub:"Hinge \u00b7 Push \u00b7 Vertical pull",ex:[
+  {key:"wu",name:"Warm-up",target:"Free-text \u2014 log what you did",freetext:true,cue:["Light sled push/pull, ankle + hip mobility, easy hops if you\u2019re doing them","A couple of ramp-up sets on the trap bar before the working weight"],fields:[]},
+  {key:"tbdl",name:"Trap-bar deadlift",target:"Target 4 \u00d7 5 @ 85 kg",rir:true,
+   cue:["How: feet mid-bar, brace, push the floor away to full lockout; lower under control \u2014 no drop or bounce","Goes first so grip is fresh (no straps)","Stop the set if bar speed grinds or form shifts","Progress: +2.5\u20135 kg when all sets are crisp"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"reps",l:"reps",ph:"5"},{k:"kg",l:"kg",ph:"85"}],
    swaps:["Conventional deadlift","DB Romanian deadlift","Hip thrust"]},
-  {key:"ssq",name:"Split squat — FFE (weighted)",target:"Target  3 × 8–10 / leg · added load",
-   cue:["Front foot elevated 2–4 in","Front heel planted, knee over toes","Prioritise the RIGHT ankle — depth + balance","Load you can control for clean reps (goblet → DBs)"],
-   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps/leg",ph:"9"},{k:"kg",l:"load kg",ph:"goblet"}],
-   swaps:["Reverse lunge","Step-up","Walking lunge"]},
-  {key:"pull",name:"Pull-up block",target:"Negatives 4–5×1 (5–8s) · blue band 3×5–6",
-   cue:["Negatives: 5–8 s lower, full rest","Reduce band tension as you strengthen","Re-test strict singles every 2 weeks"],
-   fields:[{k:"neg",l:"neg reps",ph:"5"},{k:"band",l:"band reps",ph:"6"},{k:"hold",l:"top hold s",ph:"—"}],
-   swaps:["Lat pulldown","Ring rows","Band-assisted only"]},
-  {key:"bext",name:"Back extension",target:"Target  3 × 12–15",
-   cue:["Segmental: round down, re-extend through the spine","Feel the LOWER BACK, not the hamstrings","Add a light plate once the pattern holds"],
-   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps",ph:"13"},{k:"kg",l:"load",ph:"BW"}],
-   swaps:["Reverse hyper","Light good morning"]},
-  {key:"calf",name:"Calf — slow, full ROM",target:"Bent-knee 3×10–12 + straight 2×10–12",
-   cue:["3 s up / 3 s down, full stretch at the bottom","Bent-knee first (soleus), then straight","+1 set on the right · full range OK (midportion)"],
-   fields:[{k:"bent",l:"bent ×reps",ph:"3×12"},{k:"str",l:"straight ×reps",ph:"2×12"},{k:"kg",l:"load",ph:"BW"}],
-   swaps:["Seated calf raise","Leg-press calf"]},
-  {key:"trunk",name:"Trunk",target:"Plank 3×~50s + Pallof 3×10/side",
-   cue:["Plank: neutral line, no sag — build toward 2:00","Pallof: resist the rotation, ribs down"],
-   fields:[{k:"plank",l:"plank s",ph:"50"},{k:"pallof",l:"pallof/side",ph:"10"}],swaps:[]}
- ]},
- B:{name:"Template B",sub:"Upper + carry lead",ex:[
-  {key:"wu",name:"Warm-up",target:"Free-text — log what you did",freetext:true,cue:["Light backward sled drag","Band pull-aparts · push-up ramp","Scapular pull-ups 2 × 5"],fields:[]},
-  {key:"bench",name:"DB bench press",target:"Target  4 × 6–8 @ 16 kg",rir:true,
-   cue:["Flat bench, handles parallel, no twist","Full stretch at the bottom, full lockout","LEFT arm sets the number — match both to it"],
+  {key:"bench",name:"DB bench press",target:"Target 4 \u00d7 6\u20138 @ 16 kg/hand",rir:true,
+   cue:["How: flat bench, press from full stretch to full lockout, no twist","LEFT arm sets the number \u2014 match the right to it","Grip recovers here between deadlift and pull work"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"reps",l:"reps",ph:"7"},{k:"kg",l:"kg/hand",ph:"16"}],
    swaps:["DB floor press","Machine chest press","Weighted push-up","Dip"]},
-  {key:"row",name:"Barbell row",target:"Target  4 × 8–12 @ 30 kg",
-   cue:["Torso angle frozen — don't let it rise","Elbows lead, pull to the lower ribs","Full stretch at the bottom"],
+  {key:"pullA",name:"Pull \u2014 strength (pulldown + negatives)",target:"Pulldown 3\u20134 \u00d7 6\u20138 @ 2 RIR \u00b7 Negatives 4\u20135 \u00d7 1 (5\u20138 s)",
+   cue:["Pulldown how: bar to upper chest, full stretch at the top, stop ~2 reps shy of failure","Pulldown logging: weight, then reps per set \u2014 e.g. 40: 8,8,7","Pulldown progress: add the smallest jump when all sets hit 8 cleanly","Negatives how: jump/step to chin-over-bar, lower 5\u20138 s, full rest between singles","Stop negatives the moment you can\u2019t control a full 5 s lower","Re-test the strict single every 2 weeks \u2014 fresh, before this block"],
+   fields:[{k:"pd",l:"pulldown",ph:"40: 8,8,7"},{k:"neg",l:"negatives",ph:"5\u00d71"}],
+   swaps:["Ring rows","Band-assisted pull-up"]},
+  {key:"ssq",name:"Split squat \u2014 FFE (weighted)",target:"Target 3 \u00d7 6\u201310 / leg \u00b7 DB",
+   cue:["How: front foot on a 2\u20134 in riser, heel planted, knee tracks over the toes, back knee toward the floor","RIGHT ankle priority \u2014 depth and balance","If grip is spent from earlier, switch to goblet or bodyweight tempo \u2014 the legs are the point"],
+   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps/leg",ph:"8"},{k:"kg",l:"load kg",ph:"14/hand"}],
+   swaps:["Reverse lunge","Step-up","Walking lunge"]},
+  {key:"calf",name:"Calf \u2014 slow, full ROM",target:"Bent-knee 3 \u00d7 10\u201312 + straight 2 \u00d7 10\u201312",
+   cue:["How: 3 s up / 3 s down, full stretch at the bottom of every rep","Bent-knee first (soleus), then straight-leg","+1 straight-leg set on the RIGHT"],
+   fields:[{k:"bent",l:"bent \u00d7reps",ph:"3\u00d712"},{k:"str",l:"straight \u00d7reps",ph:"2\u00d712"},{k:"kg",l:"load",ph:"BW"}],
+   swaps:["Seated calf raise","Leg-press calf"]},
+  {key:"trunk",name:"Trunk \u2014 plank + Pallof",target:"Plank 3 \u00d7 ~50 s + Pallof 3 \u00d7 10/side",
+   cue:["Plank: neutral line, no sag \u2014 building toward the 2:00 tier","Pallof: resist the rotation, ribs down"],
+   fields:[{k:"plank",l:"plank s",ph:"50"},{k:"pallof",l:"pallof/side",ph:"10"}],swaps:[]}
+ ]},
+ B:{name:"Day B",sub:"Carry \u00b7 Pull \u00b7 Posterior",ex:[
+  {key:"wu",name:"Warm-up",target:"Free-text \u2014 log what you did",freetext:true,cue:["Light sled, band pull-aparts, easy hops if you\u2019re doing them","One lighter carry length before the working sets"],fields:[]},
+  {key:"carry",name:"Carries",target:"Farmer 4 \u00d7 ~60 m @ 24 kg/hand",
+   cue:["Goes FIRST \u2014 this is your grip event and gets fresh hands","How: tall, braced, shoulders back, smooth steps","LEFT emphasis \u2014 note if the left hand fails first","~70% effort: clean quality lengths, not max holds"],
+   fields:[{k:"farmer",l:"farmer m",ph:"60"},{k:"fkg",l:"kg/hand",ph:"24"}],
+   swaps:["Suitcase carry","Trap-bar carry"]},
+  {key:"row",name:"Barbell row",target:"Target 3\u20134 \u00d7 8\u201312 @ 30 kg",
+   cue:["How: hinge, torso angle frozen \u2014 don\u2019t let it rise","Elbows lead, pull to the lower ribs, full stretch at the bottom"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"reps",l:"reps",ph:"10"},{k:"kg",l:"kg",ph:"30"}],
    swaps:["DB row","Chest-supported row","Cable row","Inverted row"]},
-  {key:"pull",name:"Pull-up block",target:"Negatives 4–5×1 + top hold 30–60s",
-   cue:["Negatives: 5–8 s lower","Accumulate 30–60 s of top holds","Re-test strict singles every 2 weeks"],
-   fields:[{k:"neg",l:"neg reps",ph:"5"},{k:"band",l:"band reps",ph:"—"},{k:"hold",l:"top hold s",ph:"40"}],
-   swaps:["Lat pulldown","Ring rows","Band-assisted only"]},
-  {key:"push",name:"Push-up",target:"Target  3 × 12–15",
-   cue:["Full depth, full lockout","Rigid line — no sagging hips"],
+  {key:"pullB",name:"Pull \u2014 top range (holds + band)",target:"Top holds 3\u20134 \u00d7 ~12 s \u00b7 Band 3 \u00d7 4\u20135 (optional)",
+   cue:["Holds how: jump/step to chin-over-bar, hold ~12 s; accumulate 30\u201360 s total","Band how: every rep\u2019s chin clears the bar cleanly; stop 1\u20132 reps before it doesn\u2019t","Band is the first thing to drop if you\u2019re short on time"],
+   fields:[{k:"hold",l:"holds",ph:"3\u00d712s"},{k:"band",l:"band reps",ph:"3\u00d75"}],
+   swaps:["Ring rows","Lat pulldown"]},
+  {key:"push",name:"Push-up",target:"Target 3 \u00d7 12\u201315",
+   cue:["How: full depth, full lockout, rigid line \u2014 no sagging hips"],
    fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps",ph:"13"}],swaps:["Incline push-up","Deficit push-up"]},
-  {key:"nordic",name:"Nordic / ham eccentric",target:"Target  3 × 3–5",
-   cue:["Lower as slowly as you can control","Top third only for now (or banded)","Push off the floor to reset"],
-   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps",ph:"4"},{k:"range",l:"range",ph:"⅓"}],
+  {key:"bext",name:"Back extension",target:"Target 3 \u00d7 12\u201315",
+   cue:["How: round down under control, re-extend through the spine segment by segment","Feel the LOWER BACK, not the hamstrings \u2014 shorten the range if hamstrings take over","Add a light plate once the pattern holds"],
+   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps",ph:"13"},{k:"kg",l:"load",ph:"BW"}],
+   swaps:["Reverse hyper","Light good morning"]},
+  {key:"nordic",name:"Nordic / ham eccentric",target:"Target 3 \u00d7 3\u20135",
+   cue:["How: lower as slowly as you can control; push off the floor to reset","Top third only for now (or banded)","Don\u2019t schedule a heavy deadlift the morning after this"],
+   fields:[{k:"sets",l:"sets",ph:"3"},{k:"reps",l:"reps",ph:"4"},{k:"range",l:"range",ph:"\u2153"}],
    swaps:["Sliding leg curl","Machine leg curl"]},
-  {key:"carry",name:"Carries",target:"Farmer 4×60m @24 + suitcase 2×30m/side",
-   cue:["Tall, braced, shoulders back","Suitcase: LEFT emphasis (grip + anti-lateral-flexion)"],
-   fields:[{k:"farmer",l:"farmer m",ph:"60"},{k:"fkg",l:"kg/hand",ph:"24"},{k:"suit",l:"suitcase m/side",ph:"30"}],swaps:[]},
-  {key:"trunkb",name:"Trunk",target:"Hanging knee raise 3×8–12 + hollow 3×30–45s",
-   cue:["Control the lower-back position","Hollow: ribs down, low back to the floor"],
+  {key:"trunkb",name:"Trunk \u2014 hang + hollow",target:"Hanging knee raise 3 \u00d7 8\u201312 + hollow 3 \u00d7 30\u201345 s",
+   cue:["Knee raise: control the lower-back position, no swing","Hollow: ribs down, low back pressed to the floor"],
    fields:[{k:"hang",l:"knee raise",ph:"10"},{k:"hollow",l:"hollow s",ph:"40"}],swaps:[]}
  ]}
 };
@@ -269,7 +271,7 @@ function lastStr(it){
 var draft=loadDraft();
 function newDraft(type){
   var t=TPL[type];
-  return {type:type,date:$("sessDate")?$("sessDate").value:todayISO(),
+  return {type:type,date:$("sessDate")?$("sessDate").value:todayISO(),snote:"",
    items:t.ex.map(function(ex){
      var li=lastItem(ex.name),vals={};
      ex.fields.forEach(function(f){vals[f.k]= li&&li.values&&li.values[f.k]!=null? li.values[f.k] : "";});
@@ -296,8 +298,8 @@ function render(){
 /* workout */
 function workoutHTML(){
   var h='<div class="seg">'
-    +'<button data-t="A" class="'+(draft.type==="A"?"on":"")+'">Template A</button>'
-    +'<button data-t="B" class="'+(draft.type==="B"?"on":"")+'">Template B</button></div>';
+    +'<button data-t="A" class="'+(draft.type==="A"?"on":"")+'">Day A</button>'
+    +'<button data-t="B" class="'+(draft.type==="B"?"on":"")+'">Day B</button></div>';
   var t=TPL[draft.type];
   t.ex.forEach(function(ex,i){
     var it=draft.items[i], li=lastItem(it.name);
@@ -336,6 +338,8 @@ function workoutHTML(){
     h+='</div>';
     h+='</div>';
   });
+  h+='<div class="sectit" style="margin-top:18px">Session note <span style="text-transform:none;letter-spacing:0;font-style:italic;color:var(--mut)">— optional: why today was light/heavy</span></div>';
+  h+='<textarea class="area" data-act="snote" id="snote" style="min-height:60px" placeholder="e.g. slept badly · 30 min only · no rack · travelling — context I can\'t see otherwise">'+esc(draft.snote||"")+'</textarea>';
   h+='<button class="btn primary" data-act="save">Save session</button>';
   h+='<button class="btn ghost sm" data-act="resetday">Clear this session</button>';
   return h;
@@ -344,7 +348,7 @@ function bindWorkout(){
   var m=$("main");
   m.querySelectorAll(".seg button").forEach(function(b){b.onclick=function(){
     var t=b.getAttribute("data-t"); if(t===draft.type)return;
-    var dirty=draft.items.some(function(it){return hasVals(it)||it.note||it.skipped||it.done||(it.rir!=null&&it.rir!=="");});
+    var dirty=draft.items.some(function(it){return hasVals(it)||it.note||it.skipped||it.done||(it.rir!=null&&it.rir!=="");})||!!draft.snote;
     if(dirty&&!confirm("Start "+t+"? Unsaved entries in the current session will be cleared."))return;
     draft=newDraft(t);saveDraft();render();
   };});
@@ -358,6 +362,7 @@ function bindWorkout(){
     if(act==="note")el.onclick=function(){var w=$("notew"+i);w.style.display=w.style.display==="none"?"block":"none";if(w.style.display==="block")w.querySelector("textarea").focus();};
     if(act==="noteinput")el.oninput=function(){draft.items[i].note=el.value;saveDraft();};
     if(act==="ft")el.oninput=function(){draft.items[i].values.text=el.value;saveDraft();};
+    if(act==="snote")el.oninput=function(){draft.snote=el.value;saveDraft();};
     if(act==="done")el.onclick=function(){var it=draft.items[i];it.done=!it.done;if(it.done)it.skipped=false;saveDraft();render();};
     if(act==="skip")el.onclick=function(){var it=draft.items[i];it.skipped=!it.skipped;if(it.skipped)it.done=false;saveDraft();render();};
     if(act==="swap")el.onclick=function(){openSwap(i);};
@@ -368,6 +373,15 @@ function bindWorkout(){
 function saveSession(){
   draft.date=$("sessDate").value||todayISO();
   var rec=JSON.parse(JSON.stringify(draft)); rec.id=Date.now();
+  rec.prog=PROGRAM_VERSION;
+  rec.bw=DATA.bodyweight||"";
+  var t=TPL[rec.type];
+  rec.items.forEach(function(it,idx){
+    var ex=t&&t.ex[idx];
+    it.target = ex&&ex.target? ex.target : "";
+    it.flabels = {};
+    if(ex&&ex.fields) ex.fields.forEach(function(f){it.flabels[f.k]=f.l;});
+  });
   DATA.sessions.push(rec); persist(); clearDraft();
   draft=newDraft(draft.type); saveDraft(); render();
   toast("Session saved ✓");
@@ -422,6 +436,9 @@ function extraHTML(){
    +'<div class="formlbl">Category</div><div class="chips" id="exCat">'
    +CATS.map(function(x){return '<button data-v="'+esc(x)+'">'+esc(x)+'</button>';}).join("")+'</div>'
    +'<div class="formlbl">Duration (min) — optional</div><input class="txt" id="exDur" inputmode="numeric" placeholder="40">'
+   +'<div class="formlbl">Avg / Max HR — optional (from watch)</div>'
+   +'<div style="display:flex;gap:9px"><input class="txt" id="exHrA" inputmode="numeric" placeholder="avg e.g. 128"><input class="txt" id="exHrM" inputmode="numeric" placeholder="max e.g. 150"></div>'
+   +'<div class="hint">For easy aerobic days, avg HR is the proof it stayed easy — log it where you have it.</div>'
    +'<div class="formlbl">How it felt — optional</div><div class="chips" id="exFeel">'
    +['Easy','Moderate','Hard'].map(function(x){return '<button data-v="'+x+'">'+x+'</button>';}).join("")+'</div>'
    +'<div class="formlbl">Details</div><textarea class="area" id="exText" placeholder="'+esc(CAT_PH.Other)+'"></textarea>'
@@ -437,7 +454,7 @@ function bindExtra(){
   $("exSave").onclick=function(){
     if(!cat&&!$("exDur").value&&!$("exText").value.trim()){toast("Pick a category or add some detail");return;}
     DATA.sessions.push({id:Date.now(),type:"extra",date:$("sessDate").value||todayISO(),
-      category:cat||"Other",duration:$("exDur").value,feel:fe,text:$("exText").value.trim()});
+      category:cat||"Other",duration:$("exDur").value,hrAvg:$("exHrA").value,hrMax:$("exHrM").value,feel:fe,text:$("exText").value.trim()});
     persist();toast("Saved ✓");view="history";syncNav();render();
   };
 }
@@ -457,7 +474,7 @@ function historyHTML(){
   if(!DATA.sessions.length)h+='<div class="empty">No sessions yet. Log your first one from the Workout tab.</div>';
   else{
     DATA.sessions.slice().reverse().forEach(function(s){
-      var title = s.type==="A"?"Template A":s.type==="B"?"Template B":s.type==="extra"?(esc(s.category)+(s.duration?" · "+esc(s.duration)+" min":"")):s.type==="aerobic"?(esc(s.modality)+" "+(s.duration?esc(s.duration)+" min":"")):("Other · "+esc(s.tag));
+      var title = s.type==="A"?"Day A":s.type==="B"?"Day B":s.type==="extra"?(esc(s.category)+(s.duration?" · "+esc(s.duration)+" min":"")):s.type==="aerobic"?(esc(s.modality)+" "+(s.duration?esc(s.duration)+" min":"")):("Other · "+esc(s.tag));
       h+='<div class="hsess" data-id="'+s.id+'"><h3>'+title+'<span class="htag">'+esc(fmtDate(s.date))+'</span></h3>';
       h+='<div class="det">'+sessionDetail(s)+'</div></div>';
     });
@@ -466,17 +483,22 @@ function historyHTML(){
 }
 function sessionDetail(s){
   if(s.type==="A"||s.type==="B"){
-    return s.items.map(function(it){
-      if(it.key==="wu"&&!it.values.text&&!it.note&&!it.skipped)return "";
+    var rows=s.items.map(function(it){
+      if(it.key==="wu")return (it.values&&it.values.text)?'<div>Warm-up: '+esc(it.values.text)+'</div>':"";
       if(it.skipped)return '<div>'+esc(it.name)+' — <i>skipped</i></div>';
-      var parts=[];for(var k in it.values){if(it.values[k]!=="")parts.push(it.values[k]);}
-      var line=esc(it.name)+(it.swapped?' (←'+esc(it.base)+')':'')+': '+(parts.join(" · ")||"—");
+      var parts=[],hasv=false;
+      for(var k in it.values){if(it.values[k]!==""){hasv=true;
+        var lab=(it.flabels&&it.flabels[k])?it.flabels[k]:k;parts.push(esc(lab)+":"+esc(it.values[k]));}}
+      if(!hasv&&!it.done&&!it.note)return "";
+      var line=esc(it.name)+(it.swapped?' (←'+esc(it.base)+')':'')+(it.done?' ✓':'')+': '+(parts.join(" · ")||"—");
       if(it.rir!=null&&it.rir!=="")line+=" · RIR "+esc(it.rir);
       if(it.note)line+=' — '+esc(it.note);
       return '<div>'+line+'</div>';
     }).join("");
+    if(s.snote)rows='<div style="color:var(--orange)">note: '+esc(s.snote)+'</div>'+rows;
+    return rows;
   }
-  if(s.type==="extra"){var parts=[esc(s.category)];if(s.duration)parts.push(esc(s.duration)+" min");if(s.feel)parts.push(esc(s.feel));return '<div>'+parts.join(" · ")+(s.text?' — '+esc(s.text):'')+'</div>';}
+  if(s.type==="extra"){var parts=[esc(s.category)];if(s.duration)parts.push(esc(s.duration)+" min");if(s.hrAvg)parts.push("HR "+esc(s.hrAvg)+(s.hrMax?"/"+esc(s.hrMax):""));if(s.feel)parts.push(esc(s.feel));return '<div>'+parts.join(" · ")+(s.text?' — '+esc(s.text):'')+'</div>';}
   if(s.type==="aerobic")return '<div>'+esc(s.modality)+' · '+esc(s.duration||"?")+' min'+(s.feel?' · '+esc(s.feel):'')+(s.note?' — '+esc(s.note):'')+'</div>';
   return '<div>'+esc(s.text||"")+'</div>';
 }
@@ -500,23 +522,51 @@ function bindHistory(){
 }
 function buildText(list){
   var L=["=== TRAINING LOG ==="];
-  if(DATA.bodyweight)L.push("Bodyweight: "+DATA.bodyweight);
-  L.push("Sessions: "+list.length+"  (exported "+new Date().toLocaleDateString()+")","");
+  L.push("program: "+PROGRAM_VERSION+"  ·  units: kg  ·  exported: "+new Date().toLocaleDateString());
+  if(DATA.bodyweight)L.push("latest bodyweight: "+DATA.bodyweight+" kg");
+  L.push("line format: [key] name | status | target | actual(labelled) | RIR | note","");
+  L.push("Sessions: "+list.length,"");
   list.slice().forEach(function(s){
     if(s.type==="A"||s.type==="B"){
-      L.push("["+s.date+"] Template "+s.type);
+      var hdr="["+s.date+"] Day "+s.type;
+      if(s.prog)hdr+="  ·  prog:"+s.prog;
+      if(s.bw)hdr+="  ·  BW:"+s.bw+"kg";
+      L.push(hdr);
+      if(s.snote)L.push("  session-note: "+s.snote);
       s.items.forEach(function(it){
-        if(it.key==="wu"&&!it.values.text&&!it.note&&!it.skipped)return;
-        if(it.skipped){L.push("  - "+it.name+": SKIPPED"+(it.note?" ("+it.note+")":""));return;}
-        var parts=[];for(var k in it.values){if(it.values[k]!=="")parts.push(it.values[k]);}
-        if(!parts.length&&!it.note&&!(it.rir!=null&&it.rir!==""))return;
-        var line="  - "+it.name+(it.swapped?" [swapped from "+it.base+"]":"")+": "+(parts.join(" / ")||"—");
-        if(it.rir!=null&&it.rir!=="")line+=" (RIR "+it.rir+")";
-        if(it.note)line+=" — note: "+it.note;
+        if(it.key==="wu"){
+          var w=(it.values&&it.values.text)?it.values.text:"";
+          if(!w&&!it.note&&!it.skipped&&!it.done)return;
+          var wl="  - [wu] Warm-up";
+          if(it.skipped)wl+=" | status: skipped";
+          else if(w)wl+=": "+w;
+          if(it.note)wl+=" | note: "+it.note;
+          L.push(wl);return;
+        }
+        var actual=[],hasv=false;
+        if(it.values){for(var k in it.values){if(it.values[k]!==""){hasv=true;
+          var lab=(it.flabels&&it.flabels[k])?it.flabels[k]:k;
+          actual.push(lab+":"+it.values[k]);}}}
+        var status=it.done?"done":(it.skipped?"skipped":(hasv?"logged":""));
+        if(!status&&!it.note)return;
+        var nm=it.swapped?(it.name+" (swapped from "+it.base+")"):it.name;
+        var line="  - ["+it.key+"] "+nm+" | status: "+(status||"logged");
+        if(it.skipped){ if(it.note)line+=" | note: "+it.note; L.push(line); return; }
+        if(it.target)line+=" | target: "+it.target;
+        line+=" | actual: "+(actual.length?actual.join(", "):"—");
+        if(it.rir!=null&&it.rir!=="")line+=" | RIR: "+it.rir;
+        if(it.note)line+=" | note: "+it.note;
         L.push(line);
       });
     } else if(s.type==="extra"){
-      var x="["+s.date+"] "+s.category; if(s.duration)x+=" "+s.duration+" min"; if(s.feel)x+=" — "+s.feel; if(s.text)x+=" — "+s.text; L.push(x);
+      var x="["+s.date+"] EXTRA · "+s.category, bits=[];
+      if(s.duration)bits.push("duration:"+s.duration+"min");
+      if(s.hrAvg)bits.push("HRavg:"+s.hrAvg);
+      if(s.hrMax)bits.push("HRmax:"+s.hrMax);
+      if(s.feel)bits.push("feel:"+s.feel);
+      if(bits.length)x+=" | "+bits.join(" · ");
+      if(s.text)x+=" | "+s.text;
+      L.push(x);
     } else if(s.type==="aerobic"){
       L.push("["+s.date+"] Easy: "+s.modality+" "+(s.duration||"?")+" min"+(s.feel?" — "+s.feel:"")+(s.note?" — "+s.note:""));
     } else {
