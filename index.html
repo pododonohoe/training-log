@@ -27,7 +27,7 @@
   #morebox[open] summary::before{content:"\25BE  "}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
     font-size:16px;line-height:1.35;-webkit-text-size-adjust:100%}
-  body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   h1,h2,h3{font-family:var(--disp);margin:0;letter-spacing:.3px}
   .mono{font-family:var(--mono)}
   .wrap{max-width:560px;margin:0 auto;padding:0 14px}
@@ -134,10 +134,10 @@
     font-size:13px;color:var(--mut);margin:22px 0 4px}
   /* bottom nav */
   nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bg2);border-top:1px solid var(--line);
-    display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));gap:4px}
+    display:flex;padding:10px 6px calc(10px + env(safe-area-inset-bottom));gap:4px}
   nav button{flex:1;background:none;border:0;color:var(--mut);font-family:var(--disp);font-weight:600;
-    font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:5px 2px;border-radius:9px}
-  nav button .ic{display:block;font-size:19px;line-height:1;margin-bottom:3px;font-family:var(--body)}
+    font-size:13px;text-transform:uppercase;letter-spacing:.5px;padding:9px 2px;border-radius:11px;min-height:52px}
+  nav button .ic{display:block;font-size:24px;line-height:1;margin-bottom:4px;font-family:var(--body)}
   nav button.on{color:var(--accent)}
   /* modal */
   .scrim{position:fixed;inset:0;background:rgba(4,8,11,.72);z-index:50;display:none;
@@ -179,8 +179,8 @@
 
 <script>
 "use strict";
-var PROGRAM_VERSION="foundation-2day-v2.1 (2026-06-15)";
-var BUILD="2.2.0";
+var PROGRAM_VERSION="foundation-2day-v2.2 (2026-07-22)";
+var BUILD="2.2.1";
 /* ---------------- storage ---------------- */
 var LS="tl_data_v1", DK="tl_draft_v1";
 function fresh(){return{version:2,bodyweight:"",sessions:[],exportedUpto:null,order:{}};}
@@ -206,73 +206,79 @@ if(!DATA.order)DATA.order={};
 /* ---------------- templates ---------------- */
 var TPL={
  A:{name:"Day A",sub:"Hinge \u00b7 Push \u00b7 Vertical pull",ex:[
-  {key:"wu",name:"Warm-up",freetext:true,cue:["Light sled push/pull, ankle + hip mobility, easy hops if you\u2019re doing them","A couple of ramp-up sets on the trap bar before the working weight"],fields:[]},
-  {key:"tbdl",name:"Trap-bar deadlift",goal:"\u2248100 kg \u00d7 5 clean (wk6)",rir:true,
-   cue:["How: feet mid-bar, brace, push the floor away to full lockout; lower under control \u2014 no drop or bounce","Goes first so grip is fresh (no straps)","Log reps per set, e.g. 5,5,5,4 \u2014 the drop-off is the signal","Stop a set if bar speed grinds or form shifts"],
+  {key:"wu",name:"Warm-up",freetext:true,cue:["BANDED ANKLE (right focus): band low behind you, looped at the ankle joint line pulling the talus back \u2014 slow lunge to first block, hold ~5 s. 4 \u00d7 10\u201315 glides, 2\u20133\u00d7/wk","Retest tibial angle every 2 weeks (phone Level on shin) \u2014 baseline R 24\u00b0 / L 34\u00b0, log as a Test in Extra","Light sled push/pull, hip mobility, easy hops if you\u2019re doing them","A couple of ramp-up sets on the trap bar before the working weight"],fields:[]},
+  {key:"tbdl",name:"Trap-bar deadlift",goal:"\u2248110 kg \u00d7 5 clean (next block)",rir:true,
+   cue:["How: feet mid-bar, brace, push the floor away to full lockout; lower under control \u2014 no drop or bounce","Goes first so grip is fresh. NO STRAPS by choice \u2014 revisit only if hands opening ends sets while legs/back have reps left","Don\u2019t jump trap-bar load and max grip work (holds/carries PRs) in the same week","Log reps per set, e.g. 5,5,5,4 \u2014 the drop-off is the signal","Stop a set if bar speed grinds or form shifts"],
    fields:[{k:"rs",l:"reps/set",ph:"5,5,5,5"},{k:"kg",l:"kg",ph:"85"}],
    swaps:["Conventional deadlift","DB Romanian deadlift","Hip thrust"]},
-  {key:"bench",name:"DB bench press",goal:"18 kg/hand \u00d7 8, L not capping",rir:true,
-   cue:["How: flat bench, press from full stretch to full lockout, no twist","LEFT arm sets the number \u2014 match the right to it","Grip recovers here between deadlift and pull work"],
+  {key:"bench",name:"DB bench press",goal:"20 kg/hand: 4\u00d76 \u2192 4\u00d78, L completes every rep \u2014 no load until 8s done",rir:true,
+   cue:["How: flat bench, press from full stretch to full lockout, no twist","LEFT arm sets the number \u2014 match the right to it. Reps before load: the goal is 8s, not a heavier 6","Grip recovers here between deadlift and pull work"],
    fields:[{k:"rs",l:"reps/set",ph:"6,6,6,6"},{k:"kg",l:"kg/hand",ph:"16"}],
    swaps:["DB floor press","Machine chest press","Weighted push-up","Dip"]},
-  {key:"pulldown",name:"Pull \u00b7 Pulldown",goal:"\u224850 kg \u00d7 8",
-   cue:["How: bar to upper chest, full stretch at the top, stop ~2 reps shy of failure","This is the loadable driver \u2014 add the smallest jump when all sets hit 8 cleanly","Log reps per set; put the weight in the kg box"],
+  {key:"pulldown",name:"Pull \u00b7 Pulldown",goal:"\u224852\u201355 kg \u00d7 8 (stacks vary \u2014 match \u224850kg\u00d78 feel, \u2248RIR 2)",
+   cue:["How: bar to upper chest, full stretch at the top, stop ~2 reps shy of failure","Unfamiliar machine? Find the weight giving 8 @ ~RIR 2 and log it \u2014 a lower number isn\u2019t regression","One pull variable progresses at a time \u2014 elbow quiet 2 weeks before nudging this","Log reps per set; put the weight in the kg box"],
    fields:[{k:"rs",l:"reps/set",ph:"8,8,7"},{k:"kg",l:"kg",ph:"40"}],
    swaps:["Ring rows","Band-assisted pull-up"]},
-  {key:"negatives",name:"Pull \u00b7 Negatives",goal:"5 \u00d7 1, controlled 5\u20138 s",
-   cue:["How: jump/step to chin-over-bar, lower 5\u20138 s, full rest between singles","Stop the moment you can\u2019t control a full 5 s lower","Re-test the strict single every 2 weeks \u2014 fresh, before the session"],
+  {key:"negatives",name:"Pull \u00b7 Negatives",goal:"5 \u00d7 1, controlled 5\u20138 s \u00b7 first pull-up attempt when a FRESH top hold passes ~30 s",
+   cue:["How: jump/step to chin-over-bar, lower 5\u20138 s, full rest between singles","Neutral grip where the frame allows \u2014 kindest to the medial elbow","Stop the moment you can\u2019t control a full 5 s lower","Elbow grumbling? Shorten lowers to ~5 s before cutting volume"],
    fields:[{k:"reps",l:"singles",ph:"5"},{k:"tempo",l:"lower s",ph:"5-8"}],
    swaps:["Band-assisted pull-up"]},
-  {key:"ssq",name:"Split squat \u2014 FFE (weighted)",goal:"3 \u00d7 10/leg @ 16 kg, R=L depth",
-   cue:["How: front foot on a 2\u20134 in riser, heel planted, knee tracks over the toes, back knee toward the floor","RIGHT ankle priority \u2014 depth and balance","Grip cooked from earlier? Drop to goblet or bodyweight tempo \u2014 the legs are the point","Log reps/leg per set"],
+  {key:"ssq",name:"Split squat \u2014 FFE (weighted)",goal:"3 \u00d7 10/leg @ 20 kg/hand, R=L depth \u2014 depth gates load",
+   cue:["How: front foot on a 2\u20134 in riser, heel planted, knee tracks over the toes, back knee toward the floor","RIGHT ankle priority \u2014 watch set 1 at new load: if the right cuts depth to keep pace, hold load until it matches","Grip cooked from earlier? Drop to goblet or bodyweight tempo \u2014 the legs are the point","Log reps/leg per set"],
    fields:[{k:"rs",l:"reps/leg/set",ph:"8,8,8"},{k:"kg",l:"kg/hand",ph:"16"}],
    swaps:["Reverse lunge","Step-up","Walking lunge"]},
-  {key:"calf",name:"Calf \u2014 slow, full ROM",goal:"low-20s both, R catches L",
-   cue:["How: 3 s up / 3 s down, full stretch at the bottom of every rep","Bent-knee first (soleus), then straight-leg","+1 straight-leg set on the RIGHT"],
+  {key:"calf",name:"Calf \u2014 slow, full ROM",goal:"BK 3\u00d715/leg BW slow \u2192 then loaded 3\u00d710 \u00b7 SL 2\u00d712/leg maintain",
+   cue:["ALL single-leg, all counts per leg","Bent-knee (soleus) is the PROGRESSED one \u2014 the Achilles tissue that matters. 3 s down, pause at the bottom stretch","Straight-leg is maintenance: 2\u00d710\u201312/leg, same tempo \u2014 max tested L19/R21, symmetric","Once BK 3\u00d715/leg is clean: add load (DB in hand), back to 3\u00d710/leg"],
    fields:[{k:"bent",l:"bent \u00d7reps/leg",ph:"3\u00d712"},{k:"str",l:"straight \u00d7reps/leg",ph:"2\u00d712"},{k:"kg",l:"load",ph:"BW"}],
    swaps:["Seated calf raise","Leg-press calf"]},
-  {key:"plank",name:"Trunk \u00b7 Plank",goal:"2:00",
-   cue:["Neutral line, no sag \u2014 building toward the 2:00 tier","Log seconds per set, e.g. 50,50,45"],
+  {key:"plank",name:"Trunk \u00b7 Plank",goal:"2:00 \u2014 likely met, confirm with one FRESH max (1:45 post-hollow on record)",
+   cue:["Neutral line, no sag","Log seconds per set, e.g. 50,50,45"],
    fields:[{k:"sec",l:"holds s",ph:"50,50,45"}],swaps:[]},
-  {key:"pallof",name:"Trunk \u00b7 Pallof",goal:"clean 3 \u00d7 10/side, then load",
+  {key:"pallof",name:"Trunk \u00b7 Pallof",goal:"clean 3 \u00d7 10/side \u2014 nudge load when easy (13.75 was)",
    cue:["Resist the rotation, ribs down, no hip shift","Progress press-out distance and hold before adding load"],
-   fields:[{k:"reps",l:"reps/side",ph:"10,10,10"},{k:"load",l:"load",ph:"light"}],swaps:[]}
+   fields:[{k:"reps",l:"reps/side",ph:"10,10,10"},{k:"load",l:"load",ph:"light"}],swaps:[]},
+  {key:"wrist",name:"Wrist prehab (finisher)",goal:"2\u00d715 curls slow + 2\u00d710 pronation \u00b7 ~5 min \u00b7 elbow insurance",
+   cue:["Palm-up wrist curls, light DB (~5 kg), 3 s down \u2014 mild sensation ok, sharp pain not","Pronation: hold a DB by one end, forearm supported, rotate palm-down slowly","Cheap insurance for the medial elbow \u2014 do it while you\u2019re there"],
+   fields:[{k:"wf",l:"curls",ph:"2\u00d715"},{k:"pro",l:"pronation",ph:"2\u00d710"}],swaps:[]}
  ]},
  B:{name:"Day B",sub:"Carry \u00b7 Pull \u00b7 Posterior",ex:[
   {key:"wu",name:"Warm-up",freetext:true,cue:["Light sled, band pull-aparts, easy hops if you\u2019re doing them","One lighter carry length before the working sets"],fields:[]},
-  {key:"carry",name:"Carries",goal:"4 \u00d7 60 m @ 28 kg/hand, L holds",
-   cue:["Goes FIRST \u2014 this is your grip event and gets fresh hands","How: tall, braced, shoulders back, smooth steps","LEFT emphasis \u2014 note if the left hand fails first","~70% effort: clean quality lengths, not max holds","Log metres OR seconds \u2014 whichever you can measure; leave the other blank. The two modes don\u2019t cross-compare"],
+  {key:"carry",name:"Carries",goal:"4 \u00d7 60 m OR 50\u201360 s @ 24 kg/hand \u2192 build toward 28/hand \u00b7 L holds",
+   cue:["Goes FIRST \u2014 this is your grip event and gets fresh hands","How: tall, braced, shoulders back, smooth steps","LEFT emphasis \u2014 note if the left hand fails first","~70% effort: clean quality lengths, not max holds","Log metres OR seconds \u2014 whichever you can measure; leave the other blank. The two modes don\u2019t cross-compare \u2014 load is the shared progression axis","Note the implement (DB/KB) when it varies \u2014 KB handles read different"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"m",l:"metres",ph:"60"},{k:"sec",l:"seconds",ph:"50"},{k:"fkg",l:"kg/hand",ph:"24"}],
    swaps:["Suitcase carry","Trap-bar carry"]},
-  {key:"row",name:"Barbell row",goal:"35 kg \u00d7 8\u201310",
-   cue:["How: hinge, torso angle frozen \u2014 don\u2019t let it rise","Elbows lead, pull to the lower ribs, full stretch at the bottom","Log reps per set"],
-   fields:[{k:"rs",l:"reps/set",ph:"10,10,9"},{k:"kg",l:"kg",ph:"30"}],
-   swaps:["DB row","Chest-supported row","Cable row","Inverted row"]},
-  {key:"holds",name:"Pull \u00b7 Top holds",goal:"accumulate 45\u201360 s",
-   cue:["Jump/step to chin-over-bar, hold ~12 s; accumulate 30\u201360 s total","Trains the top range the band misses","Log seconds per hold, e.g. 12,12,12"],
-   fields:[{k:"sec",l:"holds s",ph:"12,12,12"}],
+  {key:"nordic",name:"Nordic / ham eccentric",goal:"3 \u00d7 5 \u2014 extend range \u2153 \u2192 \u00bd",
+   cue:["EARLY on purpose \u2014 this kept getting skipped at the end of sessions. Range is the progression lever, not reps","How: lower as slowly as you can control; push off the floor to reset","Don\u2019t schedule a heavy deadlift the morning after this"],
+   fields:[{k:"rs",l:"reps/set",ph:"5,5,5"},{k:"range",l:"range",ph:"\u2153"}],
+   swaps:["Sliding leg curl","Machine leg curl"]},
+  {key:"dbrow",name:"DB row \u2014 single-arm (audit)",goal:"22 kg+ \u00d7 8\u201310/side strict \u00b7 L vs R logged \u00b7 4\u20136 sessions \u2192 verdict \u2192 barbell resumes @ 40",
+   cue:["AUDIT: same DB both sides, weaker-feeling side (likely L) first while fresh, NO torso heave \u2014 cheating is how a gap hides","Free hand braced on bench, full stretch at the bottom, elbow to the lower ribs","Note tells: one side grinding, failing earlier, or form degrading first","Neutral grip \u2014 friendlier to the medial elbow than the barbell was"],
+   fields:[{k:"rsl",l:"reps/set L",ph:"10,10,10"},{k:"rsr",l:"reps/set R",ph:"10,10,10"},{k:"kg",l:"kg",ph:"22"}],
+   swaps:["Chest-supported row","Cable row","Inverted row"]},
+  {key:"hollow",name:"Trunk \u00b7 Hollow hold",goal:"3 \u00d7 40 s (pairing with rows tested free \u2014 keep it)",
+   cue:["Ribs down, low back pressed to the floor","Fresh diagnostic 38,34,30 \u2014 paired numbers are honest numbers here","Log seconds per set, e.g. 30,30,30"],
+   fields:[{k:"sec",l:"holds s",ph:"30,30,30"}],swaps:[]},
+  {key:"push",name:"Push-up",goal:"3 \u00d7 15 clean \u00b7 fresh max 24 (tested 22 Jul)",
+   cue:["How: full depth, full lockout, rigid line \u2014 no sagging hips","Done after carries reads a few reps low (cardio) \u2014 fine, note it","Push set 1 toward 14\u201315 rather than accumulating flat 12s","Log reps per set"],
+   fields:[{k:"rs",l:"reps/set",ph:"12,12,12"}],swaps:["Incline push-up","Deficit push-up"]},
+  {key:"bext",name:"Back extension",goal:"3 \u00d7 15 strict \u2192 arms behind head \u2192 then +plate",
+   cue:["How: round down under control, re-extend through the spine segment by segment","Feel the LOWER BACK, not the hamstrings \u2014 shorten the range if hamstrings take over","Progression ladder: reps to 3\u00d715 \u2192 arm position (crossed \u2192 behind head \u2192 overhead) \u2192 plate"],
+   fields:[{k:"rs",l:"reps/set",ph:"12,12,12"},{k:"kg",l:"load",ph:"BW"}],
+   swaps:["Reverse hyper","Light good morning"]},
+  {key:"holds",name:"Pull \u00b7 Top holds",goal:"accumulate 45 s+ paired (grip endurance) \u00b7 fresh benchmark 67 s, retest ~quarterly",
+   cue:["Paired-after-carries numbers ARE the working numbers \u2014 fresh capacity (24,22,21) only shows up fresh; don\u2019t chase it here","Jump/step to chin-over-bar; neutral grip if the frame allows","Progress = paired total drifting 45 \u2192 60 s: longer holds or a 4th set, one pull variable at a time","Log seconds per hold, e.g. 15,15,15"],
+   fields:[{k:"sec",l:"holds s",ph:"15,15,15"}],
    swaps:["Ring rows","Lat pulldown"]},
-  {key:"band",name:"Pull \u00b7 Band (optional)",goal:"clean 3 \u00d7 4\u20135, less assist",
-   cue:["Every rep\u2019s chin clears the bar cleanly; stop 1\u20132 reps before it doesn\u2019t","First thing to drop if you\u2019re short on time","Log reps per set"],
+  {key:"kneeraise",name:"Trunk \u00b7 Hanging knee raise",goal:"3 \u00d7 12 (dip-frame fine)",
+   cue:["Control the lower-back position, no swing","Working toward a true hang; dip-rack version is the accepted standard for now","Log reps per set"],
+   fields:[{k:"rs",l:"reps/set",ph:"12,12,12"}],swaps:[]},
+  {key:"band",name:"Pull \u00b7 Band",goal:"clean 3 \u00d7 4\u20135, less assist",
+   cue:["Every rep\u2019s chin clears the bar cleanly; stop 1\u20132 reps before it doesn\u2019t","Not optional any more \u2014 it kept evaporating. Small dose, do it","Log reps per set"],
    fields:[{k:"reps",l:"band reps/set",ph:"5,4,4"}],
    swaps:["Ring rows"]},
-  {key:"push",name:"Push-up",goal:"3 \u00d7 15 clean; fresh max ~22\u201325",
-   cue:["How: full depth, full lockout, rigid line \u2014 no sagging hips","Done after carries reads a few reps low (cardio) \u2014 fine, note it","Log reps per set"],
-   fields:[{k:"rs",l:"reps/set",ph:"12,12,10"}],swaps:["Incline push-up","Deficit push-up"]},
-  {key:"bext",name:"Back extension",goal:"3 \u00d7 12\u201315 strict, then +plate",
-   cue:["How: round down under control, re-extend through the spine segment by segment","Feel the LOWER BACK, not the hamstrings \u2014 shorten the range if hamstrings take over","Eight strict reps beat fourteen loose ones; add a light plate once the pattern holds"],
-   fields:[{k:"rs",l:"reps/set",ph:"8,8,8"},{k:"kg",l:"load",ph:"BW"}],
-   swaps:["Reverse hyper","Light good morning"]},
-  {key:"nordic",name:"Nordic / ham eccentric",goal:"3 \u00d7 5, half range",
-   cue:["How: lower as slowly as you can control; push off the floor to reset","Top third only for now (or banded), extending the range over time","Don\u2019t schedule a heavy deadlift the morning after this"],
-   fields:[{k:"rs",l:"reps/set",ph:"4,4,3"},{k:"range",l:"range",ph:"\u00bd"}],
-   swaps:["Sliding leg curl","Machine leg curl"]},
-  {key:"kneeraise",name:"Trunk \u00b7 Hanging knee raise",goal:"3 \u00d7 12 hanging",
-   cue:["Control the lower-back position, no swing","Working toward a true hang; dip-rack version is fine for now","Log reps per set"],
-   fields:[{k:"rs",l:"reps/set",ph:"10,10,10"}],swaps:[]},
-  {key:"hollow",name:"Trunk \u00b7 Hollow hold",goal:"3 \u00d7 40 s",
-   cue:["Ribs down, low back pressed to the floor","Log seconds per set, e.g. 20,20,20"],
-   fields:[{k:"sec",l:"holds s",ph:"20,20,20"}],swaps:[]}
+  {key:"wrist",name:"Wrist prehab (finisher)",goal:"2\u00d715 curls slow + 2\u00d710 pronation \u00b7 ~5 min \u00b7 elbow insurance",
+   cue:["Palm-up wrist curls, light DB (~5 kg), 3 s down \u2014 mild sensation ok, sharp pain not","Pronation: hold a DB by one end, forearm supported, rotate palm-down slowly","Cheap insurance for the medial elbow \u2014 do it while you\u2019re there"],
+   fields:[{k:"wf",l:"curls",ph:"2\u00d715"},{k:"pro",l:"pronation",ph:"2\u00d710"}],swaps:[]}
  ]}
 };
 
@@ -524,14 +530,8 @@ function applySwap(key,name,swapped){
 
 /* extra (merged easy + other) */
 var CAT_PH={
-  Walk:"duration \u00b7 pace \u00b7 terrain \u00b7 how it felt",
-  Ruck:"duration \u00b7 load \u00b7 terrain \u00b7 how it felt",
-  Bike:"duration \u00b7 pace/HR \u00b7 how it felt",
-  Stair:"duration \u00b7 level \u00b7 how it felt",
-  Swim:"duration \u00b7 distance \u00b7 how it felt",
+  Ruck:"duration \u00b7 load \u00b7 terrain (road/trail/rough) \u00b7 distance/elevation \u00b7 how it felt",
   Kettlebells:"e.g. 5 rounds: 10 swings @24 \u00b7 8 goblet squats @24 \u2014 felt strong",
-  Conditioning:"format/rounds \u00b7 movements \u00b7 how it felt",
-  "Improvised lift":"movements \u00b7 sets \u00d7 reps \u00d7 load (e.g. 3\u00d710 DB press @20)",
   Test:"what you tested \u00b7 result (per side where relevant) \u00b7 fresh or fatigued",
   Other:"what you did \u2014 include numbers/durations where you can"};
 var CATS=Object.keys(CAT_PH);
