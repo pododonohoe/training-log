@@ -179,8 +179,8 @@
 
 <script>
 "use strict";
-var PROGRAM_VERSION="foundation-2day-v2.2 (2026-07-22)";
-var BUILD="2.2.1";
+var PROGRAM_VERSION="foundation-2day-v2.3 (2026-08-02)";
+var BUILD="2.3.0";
 /* ---------------- storage ---------------- */
 var LS="tl_data_v1", DK="tl_draft_v1";
 function fresh(){return{version:2,bodyweight:"",sessions:[],exportedUpto:null,order:{}};}
@@ -206,9 +206,12 @@ if(!DATA.order)DATA.order={};
 /* ---------------- templates ---------------- */
 var TPL={
  A:{name:"Day A",sub:"Hinge \u00b7 Push \u00b7 Vertical pull",ex:[
-  {key:"wu",name:"Warm-up",freetext:true,cue:["BANDED ANKLE (right focus): band low behind you, looped at the ankle joint line pulling the talus back \u2014 slow lunge to first block, hold ~5 s. 4 \u00d7 10\u201315 glides, 2\u20133\u00d7/wk","Retest tibial angle every 2 weeks (phone Level on shin) \u2014 baseline R 24\u00b0 / L 34\u00b0, log as a Test in Extra","Light sled push/pull, hip mobility, easy hops if you\u2019re doing them","A couple of ramp-up sets on the trap bar before the working weight"],fields:[]},
-  {key:"tbdl",name:"Trap-bar deadlift",goal:"\u2248110 kg \u00d7 5 clean (next block)",rir:true,
-   cue:["How: feet mid-bar, brace, push the floor away to full lockout; lower under control \u2014 no drop or bounce","Goes first so grip is fresh. NO STRAPS by choice \u2014 revisit only if hands opening ends sets while legs/back have reps left","Don\u2019t jump trap-bar load and max grip work (holds/carries PRs) in the same week","Log reps per set, e.g. 5,5,5,4 \u2014 the drop-off is the signal","Stop a set if bar speed grinds or form shifts"],
+  {key:"wu",name:"Warm-up",freetext:true,cue:["Light sled push/pull, hip mobility, easy hops if you\u2019re doing them","A couple of ramp-up sets on the trap bar before the working weight"],fields:[]},
+  {key:"ankle",name:"Banded ankle glides",goal:"4 \u00d7 10\u201315 slow glides \u00b7 right focus \u00b7 retest tibial angle ~every 2 wks (baseline R 24\u00b0 / L 34\u00b0)",
+   cue:["Band low behind you, looped at the ankle JOINT LINE (not up the shin), pulling the talus back","Slow lunge to first block, ~5 s hold, return \u2014 quality over count","This card exists so it can\u2019t silently vanish \u2014 mark it done or skipped, never blank"],
+   fields:[{k:"sr",l:"sets\u00d7reps",ph:"4\u00d712"}],swaps:[]},
+  {key:"tbdl",name:"Trap-bar deadlift",goal:"105 kg \u00d7 5 consolidating \u2014 two clean sessions all-sets-105 @ RIR \u22642, then 110 on prompt",rir:true,
+   cue:["How: feet mid-bar, brace, push the floor away to full lockout; lower under control \u2014 no drop or bounce","Goes first so grip is fresh. NO STRAPS by choice \u2014 revisit only if hands opening ends sets while legs/back have reps left","LOAD GATE: no increase until prompted in chat and agreed \u2014 applies to every lift","Don\u2019t jump trap-bar load and max grip work (holds/carries PRs) in the same week","Log reps per set, e.g. 5,5,5,4 \u2014 the drop-off is the signal","Stop a set if bar speed grinds or form shifts"],
    fields:[{k:"rs",l:"reps/set",ph:"5,5,5,5"},{k:"kg",l:"kg",ph:"85"}],
    swaps:["Conventional deadlift","DB Romanian deadlift","Hip thrust"]},
   {key:"bench",name:"DB bench press",goal:"20 kg/hand: 4\u00d76 \u2192 4\u00d78, L completes every rep \u2014 no load until 8s done",rir:true,
@@ -216,15 +219,11 @@ var TPL={
    fields:[{k:"rs",l:"reps/set",ph:"6,6,6,6"},{k:"kg",l:"kg/hand",ph:"16"}],
    swaps:["DB floor press","Machine chest press","Weighted push-up","Dip"]},
   {key:"pulldown",name:"Pull \u00b7 Pulldown",goal:"\u224852\u201355 kg \u00d7 8 (stacks vary \u2014 match \u224850kg\u00d78 feel, \u2248RIR 2)",
-   cue:["How: bar to upper chest, full stretch at the top, stop ~2 reps shy of failure","Unfamiliar machine? Find the weight giving 8 @ ~RIR 2 and log it \u2014 a lower number isn\u2019t regression","One pull variable progresses at a time \u2014 elbow quiet 2 weeks before nudging this","Log reps per set; put the weight in the kg box"],
+   cue:["How: bar to upper chest, full stretch at the top, stop ~2 reps shy of failure","Unfamiliar machine? Find the weight giving 8 @ ~RIR 2 and log it \u2014 a lower number isn\u2019t regression","ELBOW: if the bottom of the pull twinges, stop ~10 cm short of full contraction \u2014 load stays 52","One pull variable progresses at a time \u2014 elbow quiet 2 weeks before nudging this","Log reps per set; put the weight in the kg box"],
    fields:[{k:"rs",l:"reps/set",ph:"8,8,7"},{k:"kg",l:"kg",ph:"40"}],
    swaps:["Ring rows","Band-assisted pull-up"]},
-  {key:"negatives",name:"Pull \u00b7 Negatives",goal:"5 \u00d7 1, controlled 5\u20138 s \u00b7 first pull-up attempt when a FRESH top hold passes ~30 s",
-   cue:["How: jump/step to chin-over-bar, lower 5\u20138 s, full rest between singles","Neutral grip where the frame allows \u2014 kindest to the medial elbow","Stop the moment you can\u2019t control a full 5 s lower","Elbow grumbling? Shorten lowers to ~5 s before cutting volume"],
-   fields:[{k:"reps",l:"singles",ph:"5"},{k:"tempo",l:"lower s",ph:"5-8"}],
-   swaps:["Band-assisted pull-up"]},
   {key:"ssq",name:"Split squat \u2014 FFE (weighted)",goal:"3 \u00d7 10/leg @ 20 kg/hand, R=L depth \u2014 depth gates load",
-   cue:["How: front foot on a 2\u20134 in riser, heel planted, knee tracks over the toes, back knee toward the floor","RIGHT ankle priority \u2014 watch set 1 at new load: if the right cuts depth to keep pace, hold load until it matches","Grip cooked from earlier? Drop to goblet or bodyweight tempo \u2014 the legs are the point","Log reps/leg per set"],
+   cue:["How: front foot on a 2\u20134 in riser, heel planted, knee tracks over the toes, back knee toward the floor","1\u00d710 banded glide TOP-UP immediately before set 1 \u2014 re-open the right ankle, then load it","RIGHT ankle priority \u2014 if the right cuts depth to keep pace, hold load until it matches","Grip cooked from earlier? Drop to goblet or bodyweight tempo \u2014 the legs are the point","Log reps/leg per set"],
    fields:[{k:"rs",l:"reps/leg/set",ph:"8,8,8"},{k:"kg",l:"kg/hand",ph:"16"}],
    swaps:["Reverse lunge","Step-up","Walking lunge"]},
   {key:"calf",name:"Calf \u2014 slow, full ROM",goal:"BK 3\u00d715/leg BW slow \u2192 then loaded 3\u00d710 \u00b7 SL 2\u00d712/leg maintain",
@@ -234,7 +233,7 @@ var TPL={
   {key:"plank",name:"Trunk \u00b7 Plank",goal:"2:00 \u2014 likely met, confirm with one FRESH max (1:45 post-hollow on record)",
    cue:["Neutral line, no sag","Log seconds per set, e.g. 50,50,45"],
    fields:[{k:"sec",l:"holds s",ph:"50,50,45"}],swaps:[]},
-  {key:"pallof",name:"Trunk \u00b7 Pallof",goal:"clean 3 \u00d7 10/side \u2014 nudge load when easy (13.75 was)",
+  {key:"pallof",name:"Trunk \u00b7 Pallof",goal:"3 \u00d7 10/side @ 16.25 \u2014 hold here, quality first",
    cue:["Resist the rotation, ribs down, no hip shift","Progress press-out distance and hold before adding load"],
    fields:[{k:"reps",l:"reps/side",ph:"10,10,10"},{k:"load",l:"load",ph:"light"}],swaps:[]},
   {key:"wrist",name:"Wrist prehab (finisher)",goal:"2\u00d715 curls slow + 2\u00d710 pronation \u00b7 ~5 min \u00b7 elbow insurance",
@@ -243,6 +242,9 @@ var TPL={
  ]},
  B:{name:"Day B",sub:"Carry \u00b7 Pull \u00b7 Posterior",ex:[
   {key:"wu",name:"Warm-up",freetext:true,cue:["Light sled, band pull-aparts, easy hops if you\u2019re doing them","One lighter carry length before the working sets"],fields:[]},
+  {key:"ankle",name:"Banded ankle glides",goal:"4 \u00d7 10\u201315 slow glides \u00b7 right focus \u00b7 retest tibial angle ~every 2 wks (baseline R 24\u00b0 / L 34\u00b0)",
+   cue:["Band low behind you, looped at the ankle JOINT LINE (not up the shin), pulling the talus back","Slow lunge to first block, ~5 s hold, return \u2014 quality over count","This card exists so it can\u2019t silently vanish \u2014 mark it done or skipped, never blank"],
+   fields:[{k:"sr",l:"sets\u00d7reps",ph:"4\u00d712"}],swaps:[]},
   {key:"carry",name:"Carries",goal:"4 \u00d7 60 m OR 50\u201360 s @ 24 kg/hand \u2192 build toward 28/hand \u00b7 L holds",
    cue:["Goes FIRST \u2014 this is your grip event and gets fresh hands","How: tall, braced, shoulders back, smooth steps","LEFT emphasis \u2014 note if the left hand fails first","~70% effort: clean quality lengths, not max holds","Log metres OR seconds \u2014 whichever you can measure; leave the other blank. The two modes don\u2019t cross-compare \u2014 load is the shared progression axis","Note the implement (DB/KB) when it varies \u2014 KB handles read different"],
    fields:[{k:"sets",l:"sets",ph:"4"},{k:"m",l:"metres",ph:"60"},{k:"sec",l:"seconds",ph:"50"},{k:"fkg",l:"kg/hand",ph:"24"}],
@@ -265,17 +267,15 @@ var TPL={
    cue:["How: round down under control, re-extend through the spine segment by segment","Feel the LOWER BACK, not the hamstrings \u2014 shorten the range if hamstrings take over","Progression ladder: reps to 3\u00d715 \u2192 arm position (crossed \u2192 behind head \u2192 overhead) \u2192 plate"],
    fields:[{k:"rs",l:"reps/set",ph:"12,12,12"},{k:"kg",l:"load",ph:"BW"}],
    swaps:["Reverse hyper","Light good morning"]},
-  {key:"holds",name:"Pull \u00b7 Top holds",goal:"accumulate 45 s+ paired (grip endurance) \u00b7 fresh benchmark 67 s, retest ~quarterly",
-   cue:["Paired-after-carries numbers ARE the working numbers \u2014 fresh capacity (24,22,21) only shows up fresh; don\u2019t chase it here","Jump/step to chin-over-bar; neutral grip if the frame allows","Progress = paired total drifting 45 \u2192 60 s: longer holds or a 4th set, one pull variable at a time","Log seconds per hold, e.g. 15,15,15"],
-   fields:[{k:"sec",l:"holds s",ph:"15,15,15"}],
-   swaps:["Ring rows","Lat pulldown"]},
+  {key:"deadhang",name:"Pull \u00b7 Dead hang",goal:"3 \u00d7 20\u201330 s straight-arm \u2014 grip + hang capacity, zero flexed-elbow load",
+   cue:["ELBOW OFFLOAD: replaces top holds for ~2 weeks \u2014 straight arms throughout, no pulling","Full grip, shoulders lightly packed (not shrugged to the ears), breathe","Step off to exit \u2014 no lowering phase exists, that\u2019s the point","Log seconds per hang"],
+   fields:[{k:"sec",l:"hangs s",ph:"25,25,20"}],swaps:[]},
+  {key:"facepull",name:"Pull \u00b7 Face pull / band pull-apart",goal:"3 \u00d7 12\u201315 light \u2014 upper back + rear delts, elbow-quiet",
+   cue:["TEMPORARY: keeps pull volume up while chin-over-bar work is paused","Cable rope to the face, elbows high and wide \u2014 or band pull-aparts if no cable","Mid-range elbow only, never deep flexion under load \u2014 should feel like upper back, nothing in the elbow","Log reps per set + load"],
+   fields:[{k:"rs",l:"reps/set",ph:"12,12,12"},{k:"load",l:"load",ph:"light band"}],swaps:["Band pull-apart","Rear-delt fly"]},
   {key:"kneeraise",name:"Trunk \u00b7 Hanging knee raise",goal:"3 \u00d7 12 (dip-frame fine)",
    cue:["Control the lower-back position, no swing","Working toward a true hang; dip-rack version is the accepted standard for now","Log reps per set"],
    fields:[{k:"rs",l:"reps/set",ph:"12,12,12"}],swaps:[]},
-  {key:"band",name:"Pull \u00b7 Band",goal:"clean 3 \u00d7 4\u20135, less assist",
-   cue:["Every rep\u2019s chin clears the bar cleanly; stop 1\u20132 reps before it doesn\u2019t","Not optional any more \u2014 it kept evaporating. Small dose, do it","Log reps per set"],
-   fields:[{k:"reps",l:"band reps/set",ph:"5,4,4"}],
-   swaps:["Ring rows"]},
   {key:"wrist",name:"Wrist prehab (finisher)",goal:"2\u00d715 curls slow + 2\u00d710 pronation \u00b7 ~5 min \u00b7 elbow insurance",
    cue:["Palm-up wrist curls, light DB (~5 kg), 3 s down \u2014 mild sensation ok, sharp pain not","Pronation: hold a DB by one end, forearm supported, rotate palm-down slowly","Cheap insurance for the medial elbow \u2014 do it while you\u2019re there"],
    fields:[{k:"wf",l:"curls",ph:"2\u00d715"},{k:"pro",l:"pronation",ph:"2\u00d710"}],swaps:[]}
@@ -402,7 +402,6 @@ function workoutHTML(){
     h+='</div>';
     h+='</div>';
   });
-  h+='<button class="btn ghost sm" data-act="resetorder">Reset to default order</button>';
   h+='<div class="sectit" style="margin-top:18px">Session note <span style="text-transform:none;letter-spacing:0;font-style:italic;color:var(--mut)">\u2014 optional: why today was light/heavy, supersets</span></div>';
   h+='<textarea class="area" data-act="snote" id="snote" style="min-height:60px" placeholder="e.g. slept badly \u00b7 30 min only \u00b7 alternated rows with hollow holds">'+esc(draft.snote||"")+'</textarea>';
   h+='<button class="btn primary" data-act="save">Save session</button>';
@@ -419,28 +418,28 @@ function bindWorkout(){
   var m=$("main");
   m.querySelectorAll(".seg button").forEach(function(b){b.onclick=function(){
     var t=b.getAttribute("data-t"); if(t===draft.type)return;
-    var dirty=draft.items.some(function(it){return hasVals(it)||it.note||it.skipped||it.done||(it.rir!=null&&it.rir!=="");})||!!draft.snote;
-    if(dirty&&!confirm("Start "+t+"? Unsaved entries in the current session will be cleared."))return;
+    /* v2.3: prefill made every draft look dirty. Only warn if the user
+       actually entered something this draft (touched flag). */
+    if(draft.touched&&!confirm("Start "+t+"? Unsaved entries in the current session will be cleared."))return;
     draft=newDraft(t);saveDraft();render();
   };});
   m.querySelectorAll('input[data-k]').forEach(function(inp){inp.oninput=function(){
-    var it=itemByKey(draft,inp.getAttribute("data-key")); if(it)it.values[inp.getAttribute("data-k")]=inp.value;saveDraft();
+    var it=itemByKey(draft,inp.getAttribute("data-key")); if(it)it.values[inp.getAttribute("data-k")]=inp.value;draft.touched=true;saveDraft();
   };});
   m.querySelectorAll('[data-act]').forEach(function(el){
     var act=el.getAttribute("data-act"),key=el.getAttribute("data-key");
     function it(){return itemByKey(draft,key);}
-    if(act==="rir")el.onclick=function(){var i=it();i.rir=(i.rir===el.getAttribute("data-v"))?"":el.getAttribute("data-v");saveDraft();render();};
+    if(act==="rir")el.onclick=function(){var i=it();i.rir=(i.rir===el.getAttribute("data-v"))?"":el.getAttribute("data-v");draft.touched=true;saveDraft();render();};
     if(act==="cue")el.onclick=function(){var c=$("cue_"+key);c.style.display=c.style.display==="none"?"block":"none";};
     if(act==="note")el.onclick=function(){var w=$("notew_"+key);w.style.display=w.style.display==="none"?"block":"none";if(w.style.display==="block")w.querySelector("textarea").focus();};
-    if(act==="noteinput")el.oninput=function(){it().note=el.value;saveDraft();};
-    if(act==="ft")el.oninput=function(){it().values.text=el.value;saveDraft();};
-    if(act==="snote")el.oninput=function(){draft.snote=el.value;saveDraft();};
-    if(act==="done")el.onclick=function(){var i=it();i.done=!i.done;if(i.done)i.skipped=false;saveDraft();render();};
-    if(act==="skip")el.onclick=function(){var i=it();i.skipped=!i.skipped;if(i.skipped)i.done=false;saveDraft();render();};
+    if(act==="noteinput")el.oninput=function(){it().note=el.value;draft.touched=true;saveDraft();};
+    if(act==="ft")el.oninput=function(){it().values.text=el.value;draft.touched=true;saveDraft();};
+    if(act==="snote")el.oninput=function(){draft.snote=el.value;draft.touched=true;saveDraft();};
+    if(act==="done")el.onclick=function(){var i=it();i.done=!i.done;if(i.done)i.skipped=false;draft.touched=true;saveDraft();render();};
+    if(act==="skip")el.onclick=function(){var i=it();i.skipped=!i.skipped;if(i.skipped)i.done=false;draft.touched=true;saveDraft();render();};
     if(act==="up")el.onclick=function(){moveCard(key,-1);};
     if(act==="down")el.onclick=function(){moveCard(key,1);};
     if(act==="swap")el.onclick=function(){openSwap(key);};
-    if(act==="resetorder")el.onclick=function(){if(DATA.order)delete DATA.order[draft.type];persist();render();toast("Order reset \u2713");};
     if(act==="save")el.onclick=saveSession;
     if(act==="resetday")el.onclick=function(){if(confirm("Clear this session's entries?")){draft=newDraft(draft.type);saveDraft();render();}};
   });
