@@ -22,6 +22,14 @@
 /* ---------------------------------------------------------------------
    CHANGELOG — one line per version: date, what changed. The date links
    back to the chat where it was decided. Newest first.
+   v3.1  2026-10-28  Ankle glides move into the warm-up (R 3×12–15,
+                     L 1×12–15); the separate ankle card is gone from both
+                     days. App 3.1.0 alongside: tab bar sits flush with the
+                     bottom of the home-screen app; session date is set by
+                     the first Done (or at save), not when the draft was
+                     made, and can be edited — same for rucks and Extra;
+                     timed exercises export without the duplicate " s";
+                     any saved session can be copied again from History.
    v3.0  2026-10-12  Restart after a layoff, with the app rebuild.
                      3 working sets. Day A: deadlift and pressing. Day B:
                      split squat and carries. Pull-up rebuild (strict
@@ -32,11 +40,12 @@
    --------------------------------------------------------------------- */
 window.PROGRAMME = {
   schema: 3,
-  version: "foundation-v3.0 (2026-10-12)",
+  version: "foundation-v3.1 (2026-10-28)",
 
   library: {
     wu:       { name: "Warm-up", input: "text", load: "none",
-                cue: "Hops and rotation, sled 3–5 min, two lighter ramp-up sets on the first lift." },
+                cue: "Hops and rotations, banded ankle glides (R 3×12–15, L 1×12–15), sled 3–5 min, two lighter ramp-up sets on the first lift." },
+    /* ankle: not on either day since v3.1 (now in the warm-up); kept so old sessions still read */
     ankle:    { name: "Banded ankle glides", input: "reps", load: "none",
                 setLabels: ["R", "R", "R", "L"],
                 cue: "Band at the ankle joint line, not the shin. Slow lunge to first block, about 5 s hold." },
@@ -93,7 +102,6 @@ window.PROGRAMME = {
   days: {
     A: { name: "Day A", list: [
       { key: "wu" },
-      { key: "ankle",    sets: 4, target: "12–15" },
       { key: "tbdl",     sets: 3, target: "5",  load: 85, rir: "3+" },
       { key: "calf_bk",  sets: 3, target: "12" },
       { key: "bench",    sets: 3, target: "8",  load: 18 },
@@ -104,8 +112,7 @@ window.PROGRAMME = {
       { key: "deadhang", sets: 3, target: "25" }
     ]},
     B: { name: "Day B", list: [
-      { key: "wu", cue: "Hops and rotation, sled 3–5 min, one light carry." },
-      { key: "ankle",    sets: 4, target: "12–15" },
+      { key: "wu", cue: "Hops and rotations, banded ankle glides (R 3×12–15, L 1×12–15), sled 3–5 min, one light carry." },
       { key: "ssq",      sets: 3, target: "10", load: 20 },
       { key: "calf_sl",  sets: 3, target: "12" },
       { key: "carry",    sets: 3, target: "45", load: 24 },
