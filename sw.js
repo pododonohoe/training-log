@@ -2,7 +2,7 @@
    Opens instantly from the copy on the phone, then refreshes the app and
    programme together in the background. New versions show on next open.
    Your logged data is NOT stored here — it lives in the app's own storage. */
-var CACHE = "tl-v3.1.1";
+var CACHE = "tl-v3.1.2";
 var FILES = ["./", "./index.html", "./programme.js"];
 
 self.addEventListener("install", function (e) {
