@@ -203,7 +203,7 @@ details.more[open] summary::after{transform:rotate(45deg)}
 <script src="programme.js"></script>
 <script>
 "use strict";
-var BUILD = "3.1.0", APP_SCHEMA = 3;
+var BUILD = "3.1.1", APP_SCHEMA = 3;
 var LS = "tl_data_v1", DK = "tl_draft_v3", RK = "tl_ruck_v3", MK = "tl_mode_v3";
 var P = window.PROGRAMME || null;
 
@@ -939,23 +939,29 @@ document.addEventListener("visibilitychange", function () {
    Standalone iOS draws the page from the top of the screen, under the status bar
    (hence padding-top:--safe-t), but can report a layout viewport that is short by
    about the status bar's height. inset:0 then stops above the bottom of the screen.
-   When exactly that shortfall shows, size the shell to the screen instead. Measured
-   at launch and on rotation only — never on resize, which fires with the keyboard. */
+   When exactly that shortfall shows, size the shell to the screen instead.
+   iOS can report the top inset as 0 at launch, so this re-measures after load, on
+   return from the background and on rotation — never on resize, which fires with
+   the keyboard, and never while typing. */
 var fitInfo = "";
 function safeTop() {
   var p = document.createElement("div"); p.style.cssText = "position:absolute;visibility:hidden;padding-top:env(safe-area-inset-top,0px)";
   document.body.appendChild(p); var v = parseFloat(getComputedStyle(p).paddingTop) || 0; p.remove(); return v;
 }
-function fitApp() {
+function fitApp(when) {
+  if (isField(document.activeElement)) return;
   var app = $("app"), sh = screen.height, vh = window.innerHeight, st = safeTop();
   var standalone = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
   var fix = standalone && matchMedia("(orientation: portrait)").matches && st > 0 && sh - vh > 0 && sh - vh <= st + 10;
   app.classList.toggle("fullh", fix);
   if (fix) app.style.setProperty("--app-h", sh + "px");
-  fitInfo = "layout: screen " + sh + " · view " + vh + " · top inset " + st + " · " + (standalone ? "home-screen" : "browser") + " · fix " + (fix ? "on" : "off");
+  fitInfo = "layout (" + when + "): screen " + sh + " · view " + vh + " · top inset " + st + " · " + (standalone ? "home-screen" : "browser") + " · fix " + (fix ? "on" : "off");
 }
-fitApp();
-window.addEventListener("orientationchange", function () { setTimeout(fitApp, 400); });
+fitApp("launch");
+window.addEventListener("load", function () { fitApp("load"); setTimeout(function () { fitApp("settled"); }, 600); });
+window.addEventListener("pageshow", function () { fitApp("shown"); });
+document.addEventListener("visibilitychange", function () { if (!document.hidden) fitApp("resumed"); });
+window.addEventListener("orientationchange", function () { setTimeout(function () { fitApp("rotated"); }, 400); });
 
 /* ---- offline cache ---- */
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
